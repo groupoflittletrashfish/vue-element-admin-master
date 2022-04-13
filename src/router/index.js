@@ -130,6 +130,37 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
+    path: '/permissionManager',
+    name: '权限管理',
+    component: Layout,
+    redirect: '/menu',
+    meta: {
+      title: '权限管理',
+      icon: 'lock',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'user',
+        component: () => import('@/views/user/index'),
+        name: 'user',
+        meta: { title: '用户管理', icon: 'documentation', affix: true }
+      },
+      {
+        path: '/menu',
+        component: () => import('@/views/menu/index'),
+        name: 'menu',
+        meta: { title: '菜单管理', icon: 'documentation', affix: true }
+      },
+      {
+        path: '/role',
+        component: () => import('@/views/role/index'),
+        name: 'role',
+        meta: { title: '角色管理', icon: 'documentation', affix: true }
+      }
+    ]
+  },
+  {
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',

@@ -31,9 +31,10 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { username, password, captcha } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      // 将验证码的字段也一起传递给后端
+      login({ username: username.trim(), password: password, verifyCode: captcha }).then(response => {
         const { data } = response
         commit('SET_TOKEN', data.token)
         setToken(data.token)

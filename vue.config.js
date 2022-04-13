@@ -36,7 +36,19 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    // 代理配置，需要添加的部分
+    proxy: {
+      [process.env.VUE_APP_BASE_API]: {
+        target: process.env.VUE_APP_BASE_API,
+        // 是否跨域
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_BASE_API]: ''
+        }
+      }
+    }
+    // 注意原本的mock方式需要注释掉才行
+    // before: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

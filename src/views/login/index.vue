@@ -44,7 +44,15 @@
           </span>
         </el-form-item>
       </el-tooltip>
-
+      <!--      验证码部分，还未添加点击刷新等事件-->
+      <el-form-item>
+        <el-input v-model="loginForm.captcha" placeholder="请输入验证码" />
+      </el-form-item>
+      <!--      验证码的后端地址-->
+      <el-form-item>
+        <img :src="imgBaseCode" alt="图片加载失败，请点击重试" class="pointer" @click="refreshCode">
+      </el-form-item>
+      <!--      登录的按钮，这个是框架原来就有的，只要在这上面添加验证码即可-->
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
       <div style="position:relative">
@@ -76,6 +84,7 @@
 <script>
 import { validUsername } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
+import { getCaptcha } from '@/api/common'
 
 export default {
   name: 'Login',
@@ -98,7 +107,8 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: '111111'
+        password: '111111',
+        captcha: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -109,7 +119,8 @@ export default {
       loading: false,
       showDialog: false,
       redirect: undefined,
-      otherQuery: {}
+      otherQuery: {},
+      imgBaseCode: ''
     }
   },
   watch: {
@@ -126,6 +137,7 @@ export default {
   },
   created() {
     // window.addEventListener('storage', this.afterQRScan)
+    this.refreshCode()
   },
   mounted() {
     if (this.loginForm.username === '') {
@@ -141,6 +153,12 @@ export default {
     checkCapslock(e) {
       const { key } = e
       this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
+    },
+    refreshCode() {
+      getCaptcha()
+        .then(data => {
+          this.imgBaseCode = data
+        })
     },
     showPwd() {
       if (this.passwordType === 'password') {
