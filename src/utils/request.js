@@ -45,9 +45,8 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
-    // 该框架默认处理成功的返回值是20000，一般而言我们是200，所以此处需要修改
-    if (res.code !== 200) {
-      // 此处是验证码部分的处理，如果返回的类型是arraybuffer，那么需要特殊处理一下
+    // 只有200和字符串200的返回码是正确得，如果不是就会进入拦截方法，大坑
+    if (res.code !== 200 && res.code !== '200') {
       const indexs = response.config.responseType
       if (indexs === 'arraybuffer') {
         return 'data:image/png;base64,' + btoa(

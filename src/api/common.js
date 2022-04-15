@@ -9,3 +9,10 @@ export function getCaptcha() {
     responseType: 'arraybuffer'
   })
 }
+
+export function getMenus() {
+  return request({
+    url: '/yz-admin/sysMenu/getSidebar',
+    method: 'get'
+  })
+}
