@@ -22,3 +22,26 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function queryAllUserWithRole(data) {
+  return request({
+    url: '/yz-auth/sysUser/queryAllWithRole',
+    method: 'get',
+    params: data
+  })
+}
+
+export function queryAllRoles() {
+  return request({
+    url: '/yz-auth/sysRole/queryAll',
+    method: 'get'
+  })
+}
+
+export function updateUser(data) {
+  return request({
+    url: '/yz-auth/sysUser/updateUser',
+    method: 'post',
+    data
+  })
+}

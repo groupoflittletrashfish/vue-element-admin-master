@@ -181,6 +181,7 @@ export default {
             })
             .catch(() => {
               this.loading = false
+              this.refreshCode()
             })
         } else {
           console.log('error submit!!')

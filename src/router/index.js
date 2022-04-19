@@ -74,6 +74,7 @@ export const constantRoutes = [
     path: '/',
     component: Layout,
     redirect: '/dashboard',
+    hidden: true,
     children: [
       {
         path: 'dashboard',
@@ -86,6 +87,7 @@ export const constantRoutes = [
   {
     path: '/documentation',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'index',
@@ -99,6 +101,7 @@ export const constantRoutes = [
     path: '/guide',
     component: Layout,
     redirect: '/guide/index',
+    hidden: true,
     children: [
       {
         path: 'index',
@@ -142,19 +145,19 @@ export const asyncRoutes = [
     children: [
       {
         path: 'user',
-        component: () => import('@/views/user/index'),
+        component: () => import('@/views/admin/user/index'),
         name: 'user',
         meta: { title: '用户管理', icon: 'documentation', affix: true }
       },
       {
         path: '/menu',
-        component: () => import('@/views/menu/index'),
+        component: () => import('@/views/admin/menu/index'),
         name: 'menu',
         meta: { title: '菜单管理', icon: 'documentation', affix: true }
       },
       {
         path: '/role',
-        component: () => import('@/views/role/index'),
+        component: () => import('@/views/admin/role/index'),
         name: 'role',
         meta: { title: '角色管理', icon: 'documentation', affix: true }
       }

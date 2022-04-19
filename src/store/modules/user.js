@@ -36,8 +36,8 @@ const actions = {
       // 将验证码的字段也一起传递给后端
       login({ username: username.trim(), password: password, verifyCode: captcha }).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+        commit('SET_TOKEN', data)
+        setToken(data)
         resolve()
       }).catch(error => {
         reject(error)

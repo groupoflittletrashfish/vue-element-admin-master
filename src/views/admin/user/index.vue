@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { queryAllRoles, queryAllUserWithRole, updateUser } from '@/api/user'
 
 export default {
   data() {
@@ -162,13 +162,13 @@ export default {
       }
     },
     init() {
-      axios.get('http://localhost:9001/sysUser/queryAllWithRole').then(res => {
-        this.tableData = res.data.data
+      queryAllUserWithRole().then(res => {
+        this.tableData = res.data
       })
     },
     queryAllWithSearch() {
-      axios.get('http://localhost:9001/sysUser/queryAllWithRole?username=' + this.search).then(res => {
-        this.tableData = res.data.data
+      queryAllUserWithRole({ username: this.search }).then(res => {
+        this.tableData = res.data
       })
     },
     doUpt() {
@@ -176,18 +176,14 @@ export default {
         user: this.userForm,
         hasRoles: this.userForm.hasRole
       }
-      axios.post('http://localhost:9001/sysUser/updateUser', param).then(res => {
-        if (res.data.code === '200') {
-          this.init()
-          this.editPageVisible = false
-        } else {
-          this.$message.error(res.data.msg)
-        }
+      updateUser(param).then(res => {
+        this.init()
+        this.editPageVisible = false
       })
     },
     loadData() {
       // 获取所有可选角色
-      axios.get('http://localhost:9001/sysRole/queryAll').then(res => {
+      queryAllRoles().then(res => {
         //   this.userForm = {
         //     ...this.userForm,
         //     allRoles: res.data.data,
@@ -196,7 +192,8 @@ export default {
         // })
         // this.userForm.allRoles = res.data.data
         // this.userForm.hasRole = this.userForm.roles.map((role) => { return role.roleCode })
-        this.$set(this.userForm, 'allRoles', res.data.data)
+        console.log(res.data)
+        this.$set(this.userForm, 'allRoles', res.data)
         this.$set(this.userForm, 'hasRole', this.userForm.roles.map((role) => { return role.roleId }))
       })
     },
