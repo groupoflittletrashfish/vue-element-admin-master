@@ -123,6 +123,8 @@
 
 <script>
 import { queryAllRoles, queryAllUserWithRole, updateUser } from '@/api/user'
+import store from '@/store'
+import router from '@/router'
 
 export default {
   data() {
@@ -179,6 +181,12 @@ export default {
       updateUser(param).then(res => {
         this.init()
         this.editPageVisible = false
+        // 权限与侧边栏的动态更新
+        store.dispatch('user/getInfo').then(data => {
+          store.dispatch('permission/generateRoutes', data.roles).then(routers => {
+            router.addRoutes(routers)
+          })
+        })
       })
     },
     loadData() {
@@ -192,7 +200,6 @@ export default {
         // })
         // this.userForm.allRoles = res.data.data
         // this.userForm.hasRole = this.userForm.roles.map((role) => { return role.roleCode })
-        console.log(res.data)
         this.$set(this.userForm, 'allRoles', res.data)
         this.$set(this.userForm, 'hasRole', this.userForm.roles.map((role) => { return role.roleId }))
       })

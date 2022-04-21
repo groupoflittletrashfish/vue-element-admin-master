@@ -103,6 +103,7 @@
         default-expand-all
         node-key="menuId"
         highlight-current
+        check-strictly
         :props="defaultProps"
         :default-checked-keys="checked_keys"
         @check="uptPermission"
@@ -114,6 +115,8 @@
 
 <script>
 import { delRole, queryAllRoles, queryMenuTree, queryRoleWithPermissions, updateRole, uptRoleMenu } from '@/api/user'
+import store from '@/store'
+import router from '@/router'
 
 export default {
   name: 'Index',
@@ -224,6 +227,12 @@ export default {
       // 获取半选中状态，也就是选中的本身和父菜单的ID
       uptRoleMenu({ roleId: this.currentRoleId, menuIds: JSON.parse(JSON.stringify(node.checkedKeys)) }).then(res => {
         this.loadPermission()
+        // 权限与侧边栏的动态更新
+        store.dispatch('user/getInfo').then(data => {
+          store.dispatch('permission/generateRoutes', data.roles).then(routers => {
+            router.addRoutes(routers)
+          })
+        })
       })
     }
   }
