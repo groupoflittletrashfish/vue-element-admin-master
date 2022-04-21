@@ -66,9 +66,15 @@ const mutations = {
 const actions = {
   generateRoutes({ commit }, roles) {
     return new Promise((resolve, reject) => {
+      // 调用后端的接口获取路由数据
       getMenus().then(response => {
         const { data } = response
-        const asyncRouter = filterAsyncRouter(data)
+        console.log(data)
+        // 根据用户的身份信息（getInfo获取的），与访问菜单所需要的角色信息做比对，来过滤菜单，这个函数是框架本身自带的
+        const router = filterAsyncRoutes(data, roles)
+        console.log(router)
+        // 这个函数是自定义的，名字和框架本身包含的方法名很像，注意区分，这个函数的作用是组装数据
+        const asyncRouter = filterAsyncRouter(router)
         commit('SET_ROUTES', asyncRouter)
         resolve(asyncRouter)
       }).catch(error => {
