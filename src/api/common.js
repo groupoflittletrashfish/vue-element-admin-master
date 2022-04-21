@@ -12,7 +12,7 @@ export function getCaptcha() {
 
 export function getMenus() {
   return request({
-    url: '/yz-admin/sysMenu/getSidebar',
+    url: '/yz-auth/sysMenu/getSidebar',
     method: 'get'
   })
 }

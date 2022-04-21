@@ -31,10 +31,11 @@ export function queryAllUserWithRole(data) {
   })
 }
 
-export function queryAllRoles() {
+export function queryAllRoles(data) {
   return request({
     url: '/yz-auth/sysRole/queryAll',
-    method: 'get'
+    method: 'get',
+    params: data
   })
 }
 
@@ -45,3 +46,59 @@ export function updateUser(data) {
     data
   })
 }
+
+export function queryMenuTree() {
+  return request({
+    url: '/yz-auth/sysMenu/queryMenuTree',
+    method: 'get'
+  })
+}
+
+export function updateMenu(data) {
+  return request({
+    url: '/yz-auth/sysMenu/updateMenu',
+    method: 'post',
+    data
+  })
+}
+
+export function delMenu(data) {
+  return request({
+    url: '/yz-auth/sysMenu/delMenu',
+    method: 'post',
+    data
+  })
+}
+
+export function delRole(data) {
+  return request({
+    url: '/yz-auth/sysRole/delRole',
+    method: 'post',
+    data
+  })
+}
+
+export function updateRole(data) {
+  return request({
+    url: '/yz-auth/sysRole/updateRole',
+    method: 'post',
+    data
+  })
+}
+
+export function queryRoleWithPermissions(data) {
+  return request({
+    url: '/yz-auth/sysRoleMenu/queryRoleWithPermissions',
+    method: 'get',
+    params: data
+  })
+}
+
+export function uptRoleMenu(data) {
+  return request({
+    url: '/yz-auth/sysRoleMenu/uptRollMenu',
+    method: 'post',
+    data
+  })
+}
+

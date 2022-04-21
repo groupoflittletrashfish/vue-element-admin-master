@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
+import { getToken, removeToken } from '@/utils/auth'
+import router from "@/router";
 
 // create an axios instance
 const service = axios.create({
@@ -74,6 +75,14 @@ service.interceptors.response.use(
           })
         })
       }
+      // 如果后端返回的错误编码是-1，则跳转到登录页面
+      if (res.code === -1 || res.code === '-1') {
+        // 移除token
+        removeToken()
+        // 重定向
+        router.push('/login')
+      }
+
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
       return res

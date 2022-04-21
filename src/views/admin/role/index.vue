@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { delRole, queryAllRoles, queryMenuTree, queryRoleWithPermissions, updateRole, uptRoleMenu } from '@/api/user'
 
 export default {
   name: 'Index',
@@ -144,12 +144,8 @@ export default {
   },
   methods: {
     init(roleName) {
-      axios.get('http://localhost:9001/sysRole/queryAll?roleName=' + roleName).then(res => {
-        if (res.data.code === '200') {
-          this.tableData = res.data.data
-        } else {
-          this.$message.error(res.data.msg)
-        }
+      queryAllRoles(roleName).then(res => {
+        this.tableData = res.data
       })
     },
     delFormat(row) {
@@ -175,13 +171,9 @@ export default {
       this.dialogTableVisible = false
     },
     doAdd() {
-      axios.post('http://localhost:9001/sysRole/updateRole', this.form).then(res => {
-        if (res.data.code === '200') {
-          this.init('')
-          this.dialogTableVisible = false
-        } else {
-          this.$message.error(res.data.msg)
-        }
+      updateRole(this.form).then(res => {
+        this.init('')
+        this.dialogTableVisible = false
       })
     },
     edit(row) {
@@ -195,12 +187,8 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.post('http://localhost:9001/sysRole/delRole', { roleId: row.roleId }).then(res => {
-          if (res.data.code !== '200') {
-            this.$message.error(res.data.msg)
-          } else {
-            this.init('')
-          }
+        delRole({ roleId: row.roleId }).then(res => {
+          this.init('')
         })
         this.$message({
           type: 'success',
@@ -219,10 +207,10 @@ export default {
     },
     loadPermission() {
       // 加载该角色所拥有的权限
-      axios.get('http://localhost:9001/sysRoleMenu/queryRoleWithPermissions?roleId=' + this.currentRoleId).then(res => {
-        this.checked_keys = res.data.data
-        axios.get('http://localhost:9001/sysMenu/queryAllList').then(res => {
-          this.permission_tree = res.data.data
+      queryRoleWithPermissions({ roleId: this.currentRoleId }).then(res => {
+        this.checked_keys = res.data
+        queryMenuTree().then(res => {
+          this.permission_tree = res.data
         })
       })
     },
@@ -234,12 +222,8 @@ export default {
       // const checkedData = JSON.parse(JSON.stringify(node.checkedKeys))
       // const checked = checkedData.concat(node.halfCheckedKeys)
       // 获取半选中状态，也就是选中的本身和父菜单的ID
-      axios.post('http://localhost:9001/sysRoleMenu/uptRollMenu', { roleId: this.currentRoleId, menuIds: JSON.parse(JSON.stringify(node.checkedKeys)) }).then(res => {
-        if (res.data.code !== '200') {
-          this.$message.error(res.data.msg)
-        } else {
-          this.loadPermission()
-        }
+      uptRoleMenu({ roleId: this.currentRoleId, menuIds: JSON.parse(JSON.stringify(node.checkedKeys)) }).then(res => {
+        this.loadPermission()
       })
     }
   }

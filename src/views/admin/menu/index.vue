@@ -52,7 +52,7 @@
         label="图标"
       >
         <template slot-scope="scope">
-          <svg-icon icon-class="password" />
+          <svg-icon icon-class="scope.row.icon" />
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -115,7 +115,9 @@
 </template>
 
 <script>
-import * as axios from 'axios'
+import { delMenu, queryMenuTree, updateMenu } from '@/api/user'
+import store from '@/store'
+import router from '@/router'
 
 export default {
   name: 'Index',
@@ -146,8 +148,8 @@ export default {
   },
   methods: {
     init() {
-      axios.get('http://localhost:9001/sysMenu/queryAllList').then(res => {
-        this.tableData = res.data.data
+      queryMenuTree().then(res => {
+        this.tableData = res.data
       })
     },
     addMainMenu() {
@@ -176,16 +178,17 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.post('http://localhost:9001/sysMenu/delMenu', { menuId: row.menuId }).then(res => {
-          if (res.data.code !== '200') {
-            this.$message.error(res.data.msg)
-          } else {
-            this.init()
-          }
-        })
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
+        delMenu({ menuId: row.menuId }).then(res => {
+          this.init()
+
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+
+          // 刷新侧边栏
+          const accessRoutes = store.dispatch('permission/generateRoutes')
+          router.addRoutes(accessRoutes)
         })
       }).catch(() => {
         this.$message({
@@ -207,12 +210,12 @@ export default {
         type: this.form.type,
         delFlag: 0
       }
-      axios.post('http://localhost:9001/sysMenu/updateMenu', param).then(res => {
-        if (res.data.code !== '200') {
-          this.$message.error(res.data.msg)
-        } else {
-          this.dialogVisible = false
-        }
+      updateMenu(param).then(res => {
+        this.init()
+        this.dialogVisible = false
+        // 刷新侧边栏
+        const accessRoutes = store.dispatch('permission/generateRoutes')
+        router.addRoutes(accessRoutes)
       })
     },
     doClose() {

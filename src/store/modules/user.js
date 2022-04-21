@@ -73,7 +73,7 @@ const actions = {
 
       const data =
         {
-          roles: ['admin'], // 身份
+          roles: ['ROLE_ADMIN'], // 身份
           introduction: 'Administrator',
           avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
           name: 'administrator'
