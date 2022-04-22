@@ -10,6 +10,7 @@
       />
     </div>
     <el-button type="primary" class="searchBtn" @click="queryAllWithSearch">搜索</el-button>
+    <el-button type="primary" icon="el-icon-plus" class="add_btn" @click="addUser">添加</el-button>
     <!--    表格数据-->
     <div>
       <el-table
@@ -178,6 +179,7 @@ export default {
         user: this.userForm,
         hasRoles: this.userForm.hasRole
       }
+      console.log(param)
       updateUser(param).then(res => {
         this.init()
         this.editPageVisible = false
@@ -201,11 +203,21 @@ export default {
         // this.userForm.allRoles = res.data.data
         // this.userForm.hasRole = this.userForm.roles.map((role) => { return role.roleCode })
         this.$set(this.userForm, 'allRoles', res.data)
-        this.$set(this.userForm, 'hasRole', this.userForm.roles.map((role) => { return role.roleId }))
+        if (this.userForm.roles) {
+          this.$set(this.userForm, 'hasRole', this.userForm.roles.map((role) => { return role.roleId }))
+        }
       })
     },
     showRoles(type) {
 
+    },
+    addUser() {
+      this.editTitle = '添加用户'
+      this.editPageVisible = true
+      this.userForm = {
+        allRoles: [],
+        hasRole: []
+      }
     }
   }
 }
@@ -228,5 +240,8 @@ export default {
   .tag{
     margin: 1px 1px;
     width:100px
+  }
+  .add_btn{
+    float: right;
   }
 </style>

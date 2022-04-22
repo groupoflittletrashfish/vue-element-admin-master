@@ -103,7 +103,6 @@
         default-expand-all
         node-key="menuId"
         highlight-current
-        check-strictly
         :props="defaultProps"
         :default-checked-keys="checked_keys"
         @check="uptPermission"
@@ -222,10 +221,11 @@ export default {
       this.permission_tree = []
     },
     uptPermission(data, node) {
-      // const checkedData = JSON.parse(JSON.stringify(node.checkedKeys))
-      // const checked = checkedData.concat(node.halfCheckedKeys)
+      const checkedData = JSON.parse(JSON.stringify(node.checkedKeys))
+      const checked = checkedData.concat(node.halfCheckedKeys)
+      console.log(checked)
       // 获取半选中状态，也就是选中的本身和父菜单的ID
-      uptRoleMenu({ roleId: this.currentRoleId, menuIds: JSON.parse(JSON.stringify(node.checkedKeys)) }).then(res => {
+      uptRoleMenu({ roleId: this.currentRoleId, menuIds: JSON.parse(JSON.stringify(checked)) }).then(res => {
         this.loadPermission()
         // 权限与侧边栏的动态更新
         store.dispatch('user/getInfo').then(data => {
