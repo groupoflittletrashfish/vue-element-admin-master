@@ -64,7 +64,7 @@
         >
           <template slot-scope="scope">
             <el-button size="small" @click="handleClick(scope.row)">编辑</el-button>
-            <el-button size="small" type="danger">删除</el-button>
+            <el-button size="small" type="danger" @click="delUser(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -123,7 +123,7 @@
 </template>
 
 <script>
-import { queryAllRoles, queryAllUserWithRole, updateUser } from '@/api/user'
+import { deluser, queryAllRoles, queryAllUserWithRole, updateUser } from '@/api/user'
 import store from '@/store'
 import router from '@/router'
 
@@ -179,7 +179,6 @@ export default {
         user: this.userForm,
         hasRoles: this.userForm.hasRole
       }
-      console.log(param)
       updateUser(param).then(res => {
         this.init()
         this.editPageVisible = false
@@ -218,6 +217,27 @@ export default {
         allRoles: [],
         hasRole: []
       }
+    },
+    delUser(row) {
+      this.$confirm('是否确认删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deluser({ userId: row.userId }).then(() => {
+          this.init()
+        }
+        )
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   }
 }

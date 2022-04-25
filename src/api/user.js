@@ -101,3 +101,11 @@ export function uptRoleMenu(data) {
   })
 }
 
+export function deluser(data) {
+  return request({
+    url: '/yz-auth/sysUser/delUser',
+    method: 'post',
+    params: data
+  })
+}
+

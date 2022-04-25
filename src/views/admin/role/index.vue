@@ -223,7 +223,6 @@ export default {
     uptPermission(data, node) {
       const checkedData = JSON.parse(JSON.stringify(node.checkedKeys))
       const checked = checkedData.concat(node.halfCheckedKeys)
-      console.log(checked)
       // 获取半选中状态，也就是选中的本身和父菜单的ID
       uptRoleMenu({ roleId: this.currentRoleId, menuIds: JSON.parse(JSON.stringify(checked)) }).then(res => {
         this.loadPermission()
