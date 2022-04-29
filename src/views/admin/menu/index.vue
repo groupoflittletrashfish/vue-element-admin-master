@@ -118,6 +118,7 @@
 import { delMenu, queryMenuTree, updateMenu } from '@/api/user'
 import store from '@/store'
 import router from '@/router'
+import VueRouter from 'vue-router'
 
 export default {
   name: 'Index',
@@ -214,8 +215,16 @@ export default {
         this.init()
         this.dialogVisible = false
         // 刷新侧边栏
-        const accessRoutes = store.dispatch('permission/generateRoutes')
-        router.addRoutes(accessRoutes)
+        // 获取用户的身份信息
+        store.dispatch('user/getInfo').then(data => {
+          // 获取后端的路由信息
+          store.dispatch('permission/generateRoutes', data.roles).then(routers => {
+            // matcher其实就是保存路由的具体信息，如果不先清空就会报出警告，也就是路由重复警告
+            router.matcher = new VueRouter().matcher
+            // 添加路由
+            router.addRoutes(routers)
+          })
+        })
       })
     },
     doClose() {

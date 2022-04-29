@@ -108,7 +108,7 @@ export default {
       loginForm: {
         username: 'admin',
         password: '123456',
-        captcha: ''
+        captcha: '1111'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur' }],

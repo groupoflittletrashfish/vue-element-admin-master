@@ -126,6 +126,7 @@
 import { deluser, queryAllRoles, queryAllUserWithRole, updateUser } from '@/api/user'
 import store from '@/store'
 import router from '@/router'
+import VueRouter from 'vue-router'
 
 export default {
   data() {
@@ -185,6 +186,7 @@ export default {
         // 权限与侧边栏的动态更新
         store.dispatch('user/getInfo').then(data => {
           store.dispatch('permission/generateRoutes', data.roles).then(routers => {
+            router.matcher = new VueRouter().matcher
             router.addRoutes(routers)
           })
         })
@@ -226,12 +228,12 @@ export default {
       }).then(() => {
         deluser({ userId: row.userId }).then(() => {
           this.init()
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
         }
         )
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        })
       }).catch(() => {
         this.$message({
           type: 'info',

@@ -116,6 +116,7 @@
 import { delRole, queryAllRoles, queryMenuTree, queryRoleWithPermissions, updateRole, uptRoleMenu } from '@/api/user'
 import store from '@/store'
 import router from '@/router'
+import VueRouter from 'vue-router'
 
 export default {
   name: 'Index',
@@ -146,7 +147,7 @@ export default {
   },
   methods: {
     init(roleName) {
-      queryAllRoles(roleName).then(res => {
+      queryAllRoles({ roleName: roleName }).then(res => {
         this.tableData = res.data
       })
     },
@@ -229,6 +230,7 @@ export default {
         // 权限与侧边栏的动态更新
         store.dispatch('user/getInfo').then(data => {
           store.dispatch('permission/generateRoutes', data.roles).then(routers => {
+            router.matcher = new VueRouter().matcher
             router.addRoutes(routers)
           })
         })
