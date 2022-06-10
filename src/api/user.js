@@ -2,29 +2,32 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: '/yz-auth/login',
+    url: '/yz-auth-center/oauth/token',
     method: 'post',
-    params: data
+    params: data,
+    headers: {
+      'Authorization': 'Basic bm9uYW1lOjEyMzQ1Ng=='
+    }
   })
 }
 
 export function getInfo() {
   return request({
-    url: '/yz-auth/sysUser/getUserInfo',
+    url: '/yz-pm/sysUser/getUserInfo',
     method: 'get'
   })
 }
 
 export function logout() {
   return request({
-    url: '/yz-auth/logout',
+    url: '/yz-pm/logout',
     method: 'post'
   })
 }
 
 export function queryAllUserWithRole(data) {
   return request({
-    url: '/yz-auth/sysUser/queryAllWithRole',
+    url: '/yz-pm/sysUser/queryAllWithRole',
     method: 'get',
     params: data
   })
@@ -32,7 +35,7 @@ export function queryAllUserWithRole(data) {
 
 export function queryAllRoles(data) {
   return request({
-    url: '/yz-auth/sysRole/queryAll',
+    url: '/yz-pm/sysRole/queryAll',
     method: 'get',
     params: data
   })
@@ -40,7 +43,7 @@ export function queryAllRoles(data) {
 
 export function updateUser(data) {
   return request({
-    url: '/yz-auth/sysUser/updateUser',
+    url: '/yz-pm/sysUser/updateUser',
     method: 'post',
     data
   })
@@ -48,14 +51,14 @@ export function updateUser(data) {
 
 export function queryMenuTree() {
   return request({
-    url: '/yz-auth/sysMenu/queryMenuTree',
+    url: '/yz-pm/sysMenu/queryMenuTree',
     method: 'get'
   })
 }
 
 export function updateMenu(data) {
   return request({
-    url: '/yz-auth/sysMenu/updateMenu',
+    url: '/yz-pm/sysMenu/updateMenu',
     method: 'post',
     data
   })
@@ -63,7 +66,7 @@ export function updateMenu(data) {
 
 export function delMenu(data) {
   return request({
-    url: '/yz-auth/sysMenu/delMenu',
+    url: '/yz-pm/sysMenu/delMenu',
     method: 'post',
     data
   })
@@ -71,7 +74,7 @@ export function delMenu(data) {
 
 export function delRole(data) {
   return request({
-    url: '/yz-auth/sysRole/delRole',
+    url: '/yz-pm/sysRole/delRole',
     method: 'post',
     data
   })
@@ -79,7 +82,7 @@ export function delRole(data) {
 
 export function updateRole(data) {
   return request({
-    url: '/yz-auth/sysRole/updateRole',
+    url: '/yz-pm/sysRole/updateRole',
     method: 'post',
     data
   })
@@ -87,7 +90,7 @@ export function updateRole(data) {
 
 export function queryRoleWithPermissions(data) {
   return request({
-    url: '/yz-auth/sysRoleMenu/queryRoleWithPermissions',
+    url: '/yz-pm/sysRoleMenu/queryRoleWithPermissions',
     method: 'get',
     params: data
   })
@@ -95,7 +98,7 @@ export function queryRoleWithPermissions(data) {
 
 export function uptRoleMenu(data) {
   return request({
-    url: '/yz-auth/sysRoleMenu/uptRollMenu',
+    url: '/yz-pm/sysRoleMenu/uptRollMenu',
     method: 'post',
     data
   })
@@ -103,9 +106,20 @@ export function uptRoleMenu(data) {
 
 export function deluser(data) {
   return request({
-    url: '/yz-auth/sysUser/delUser',
+    url: '/yz-pm/sysUser/delUser',
     method: 'post',
     params: data
+  })
+}
+
+export function refreshToken(data) {
+  return request({
+    url: '/yz-auth-center/oauth/token',
+    method: 'post',
+    params: data,
+    headers: {
+      'Authorization2': 'Basic bm9uYW1lOjEyMzQ1Ng=='
+    }
   })
 }
 

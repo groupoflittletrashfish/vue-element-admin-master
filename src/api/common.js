@@ -4,7 +4,7 @@ import request from '@/utils/request'
 // 完整的属性可以查看 https://blog.csdn.net/weixin_42161050/article/details/121475647
 export function getCaptcha() {
   return request({
-    url: '/yz-auth/captcha/captchaCode',
+    url: '/yz-pm/captcha/captchaCode',
     method: 'post',
     responseType: 'arraybuffer'
   })
@@ -12,7 +12,7 @@ export function getCaptcha() {
 
 export function getMenus() {
   return request({
-    url: '/yz-auth/sysMenu/getSidebar',
+    url: '/yz-pm/sysMenu/getSidebar',
     method: 'get'
   })
 }

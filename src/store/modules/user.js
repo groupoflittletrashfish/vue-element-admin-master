@@ -1,5 +1,5 @@
-import { getInfo, login, logout } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getInfo, login, logout, refreshToken } from '@/api/user'
+import { getToken, setToken, removeToken, getRefreshToken, setRefreshToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
 const state = {
@@ -34,10 +34,12 @@ const actions = {
     const { username, password, captcha } = userInfo
     return new Promise((resolve, reject) => {
       // 将验证码的字段也一起传递给后端
-      login({ username: username.trim(), password: password, verifyCode: captcha }).then(response => {
+      login({ username: username.trim(), password: password, verifyCode: captcha, grant_type: 'password', scope: 'all' }).then(response => {
+        console.log(response)
         const { data } = response
-        commit('SET_TOKEN', data)
-        setToken(data)
+        commit('SET_TOKEN', data.access_token)
+        setToken(data.access_token)
+        setRefreshToken(data.refresh_token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -102,10 +104,14 @@ const actions = {
   // remove token
   resetToken({ commit }) {
     return new Promise(resolve => {
-      commit('SET_TOKEN', '')
-      commit('SET_ROLES', [])
-      removeToken()
-      resolve()
+      // commit('SET_TOKEN', '')
+      // commit('SET_ROLES', [])
+      // removeToken()
+      // resolve()
+      refreshToken({ grant_type: 'refresh_token', refresh_token: getRefreshToken() }).then(response => {
+        setToken(response.data.access_token)
+        setRefreshToken(response.data.refresh_token)
+      })
     })
   },
 

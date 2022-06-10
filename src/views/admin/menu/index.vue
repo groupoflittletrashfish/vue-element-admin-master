@@ -37,7 +37,7 @@
         prop="sortOrder"
         label="排序"
         sortable
-        width="180"
+        width="50"
       />
       <el-table-column
         prop="path"
