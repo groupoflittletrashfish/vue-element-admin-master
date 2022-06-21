@@ -49,7 +49,7 @@
         <el-input v-model="loginForm.captcha" placeholder="请输入验证码" />
       </el-form-item>
       <!--      验证码的后端地址-->
-      <el-form-item>
+      <el-form-item class="captcha">
         <img :src="imgBaseCode" alt="图片加载失败，请点击重试" class="pointer" @click="refreshCode">
       </el-form-item>
       <!--      登录的按钮，这个是框架原来就有的，只要在这上面添加验证码即可-->
@@ -339,5 +339,10 @@ $light_gray:#eee;
       display: none;
     }
   }
+}
+
+.captcha {
+  border: 0;
+  background: none;
 }
 </style>

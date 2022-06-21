@@ -1,8 +1,7 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
-import { getToken, removeToken } from '@/utils/auth'
-import router from '@/router'
+import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
@@ -31,7 +30,6 @@ service.interceptors.request.use(
   },
   error => {
     // do something with request error
-    console.log(error) // for debug
     return Promise.reject(error)
   }
 )
@@ -59,7 +57,6 @@ service.interceptors.response.use(
             .reduce((data, byte) => data + String.fromCharCode(byte), '')
         )
       }
-
       Message({
         message: res.msg || 'Error',
         type: 'error',
@@ -67,8 +64,8 @@ service.interceptors.response.use(
       })
 
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      // 在后置的拦截器中捕捉token失效的返回码，并且前提是cookie中已经存在token了，加上这个是因为这个框架一上来就会调用getUserInfo，此时token失效状态一定会进去，所以会报错
-      if ((res.code === -2 || res.code === '-2') && getToken()) {
+      // 在后置的拦截器中捕捉token失效的返回码，并且前提是cookie中已经存在token了
+      if ((res.code === -2 || res.code === '-2')) {
         // to re-login
         MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
           confirmButtonText: 'Re-Login',
@@ -80,23 +77,15 @@ service.interceptors.response.use(
           })
         })
       }
-      // 如果后端返回的错误编码是-1，则跳转到登录页面
-      // if (res.code === -1 || res.code === '-1') {
-      //   // 移除token
-      //   removeToken()
-      //   // 重定向
-      //   router.push('/login')
-      // }
 
-      return Promise.reject(new Error(res.message || 'Error'))
+      return Promise.reject(new Error(res.msg || 'Error'))
     } else {
       return res
     }
   },
   error => {
-    console.log('err' + error) // for debug
     Message({
-      message: error.message,
+      message: error.response.data.msg,
       type: 'error',
       duration: 5 * 1000
     })

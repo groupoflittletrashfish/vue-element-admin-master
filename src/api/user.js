@@ -20,7 +20,7 @@ export function getInfo() {
 
 export function logout() {
   return request({
-    url: '/yz-pm/logout',
+    url: '/yz-auth-center/logout',
     method: 'post'
   })
 }
